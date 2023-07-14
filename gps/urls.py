@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import Index
+from .views import DataView, GpsView
 
 urlpatterns = [
-    path('data/', Index.as_view(), name='index'),
+    path('gps/', GpsView.as_view(), name='Gps'),
+    path('data/', DataView.as_view(), name='Data'),
 ]
