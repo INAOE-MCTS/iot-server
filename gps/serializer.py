@@ -1,11 +1,11 @@
 from django.db import models
 from rest_framework import serializers
-from .models import DataModel
+from .models import GpsModel, DataModel
 
 
 class GpsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DataModel
+        model = GpsModel
         fields = '__all__'
 
 
