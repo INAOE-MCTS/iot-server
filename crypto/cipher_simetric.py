@@ -3,8 +3,10 @@ from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from base64 import b64encode, b64decode
 
+session_key = "cloyYASLV4nOBlWQ5ITfbqVuQ3C8FLeQLM8TtujEF28="
 
-def chiper_simetric(plaintext, session_key):
+
+def cipher_simetric(plaintext, session_key):
 
     plaintext_encode = plaintext.encode('utf-8')
     # Ciframos la data con la llave de sesion generada 
@@ -21,7 +23,7 @@ def chiper_simetric(plaintext, session_key):
 
 
 
-def deschiper_simetric(ciphertext, iv, session_key):
+def descipher_simetric(ciphertext, iv, session_key):
 
     ciphertext_encode = ciphertext.encode('utf-8')
     ciphertext = b64decode(ciphertext_encode)
@@ -40,13 +42,3 @@ def deschiper_simetric(ciphertext, iv, session_key):
     # Retornamos la data descifrada en texto claro
     return plaintext
 
-plaintext = "Prueba de cifrado en el servidor"
-session_key = "INGa13wNM00T7vkCbZ9U9A=="
-ciphertext = "H4CJH5qOwyjYxQu3wtCAWBHLXVWeo8xtG+VO6fSL8RORm86GTXAgLVv9v8oSHHuY"
-iv = "i1eeOiE53Hovfs/a8gHOiA=="
-
-# cifrado = chiper_simetric(plaintext, session_key)
-# print(cifrado)
-
-descifrado = deschiper_simetric(ciphertext, iv, session_key)
-print(descifrado)

@@ -5,6 +5,8 @@ import jwt
 import datetime
 from rest_framework import status
 from django.contrib.auth.models import User
+from crypto import descipher_asimetric, descipher_simetric, session_key
+
 
 #Serializers
 from .serializers import (
@@ -40,11 +42,25 @@ class UserView(APIView):
 # Vista para el login
 class LoginView(APIView):
     def post(self, request):
-        email = request.data['email']
-        password = request.data['password']
+        print("request: ", request.data)
+        print("aplicamos el algoritmo de descifrado")
+        print(request.data['ciphertext'])
+        print(request.data['iv'])
+        print(session_key)
+        # data = descipher_asimetric(request.data)
+        data = descipher_simetric(request.data['ciphertext'], request.data['iv'], session_key)
+        print("request_plain: ", data)
+
+        print(data.data)
+        email = data.data['email']
+        password = data.data['password']
+        public_key_cipher = data.data['public_key']
+        
+
 
         # Busca el email en la BD y almacena la informacion en user.
         user = User.objects.filter(email=email).first()
+        print(user)
 
         # Si no existe, devuelve error de autentificacion al response del usuario
         if user is None:
@@ -63,10 +79,4 @@ class LoginView(APIView):
 
         token = jwt.encode(payload, 'secret', algorithm='HS256')
 
-        response = Response()
-        
-        response.data = {
-            'token': token,
-        }
-
-        return response
+        return Response(data={'token': token}, status=status.HTTP_200_OK)
